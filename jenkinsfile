@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+  environment {
+      name = "Mansoor Alam"
+  }
+  parameters{
+      string(name: 'person', defaultValue: "Meer Ali", description:"who are you")
+  }
+    stages {
+        stage('Hello') {
+            steps {
+                sh '''
+                pwd
+                date
+                echo "${BUILD_ID}"
+                echo "my first naem is ${name}"
+                echo "string parameter ${person}"
+                '''
+            }
+        }
+        
+        stage ("print name"){
+            input {
+                message "should be continue"
+                ok "yes we should"
+            }
+            environment {
+                name= "Meer Ali"
+            }
+            steps {
+                sh '''
+                    echo "my name is ${name}"
+                    '''
+            }
+        }
+
+    }
+    post {
+        always {
+            echo "i'll ve run always"
+        }
+        failure {
+            echo "job fail"
+        }
+        success {
+            echo "job sucess"
+        }
+    }
+}
